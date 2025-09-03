@@ -94,9 +94,9 @@ jobs:
         run: |
           IMAGE_NAME=acrapellidodev.azurecr.io/my-nodejs-app
           TAG=${{ steps.short.outputs.short_sha }}
-          APP_NAME=my-nodejs-app
+          APP_NAME=aca-ms-apellido-dev
           RESOURCE_GROUP=rg-cicd-terraform-app-apellido
-          ENVIRONMENT=dev
+
           echo "IMAGE=$IMAGE_NAME:$TAG" >> $GITHUB_ENV
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "RESOURCE_GROUP=$RESOURCE_GROUP" >> $GITHUB_ENV
