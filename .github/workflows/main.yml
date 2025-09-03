@@ -64,11 +64,11 @@ jobs:
 
       - name: Docker Login to ACR
         run: |
-          az acr login --name acrapellidodev
+          az acr login --name acrapellido
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME=acrapellidodev.azurecr.io/my-nodejs-app
+          IMAGE_NAME=acrapellido.azurecr.io/my-nodejs-app
           TAG=${{ steps.short.outputs.short_sha }}
           echo "Construyendo imagen $IMAGE_NAME:$TAG"
           docker build -t $IMAGE_NAME:$TAG .
@@ -92,7 +92,7 @@ jobs:
   
       - name: Set variables
         run: |
-          IMAGE_NAME=acrapellidodev.azurecr.io/my-nodejs-app
+          IMAGE_NAME=acrapellido.azurecr.io/my-nodejs-app
           TAG=${{ steps.short.outputs.short_sha }}
           APP_NAME=aca-ms-apellido-dev
           RESOURCE_GROUP=rg-cicd-terraform-app-apellido
