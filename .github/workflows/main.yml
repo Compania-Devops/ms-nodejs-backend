@@ -81,6 +81,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
   
+      - name: Obtener SHA corto
+        id: short
+        run: echo "short_sha=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
+        
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -89,7 +93,7 @@ jobs:
       - name: Set variables
         run: |
           IMAGE_NAME=acrapellidodev.azurecr.io/my-nodejs-app
-          TAG=${{ needs.build.outputs.image_tag }}
+          TAG=${{ steps.short.outputs.short_sha }}
           APP_NAME=my-nodejs-app
           RESOURCE_GROUP=rg-dev
           ENVIRONMENT=dev
