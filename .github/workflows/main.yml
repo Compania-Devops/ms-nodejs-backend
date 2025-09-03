@@ -104,6 +104,11 @@ jobs:
             --resource-group $RESOURCE_GROUP \
             --image $IMAGE \
             --set-env-vars ENV=${{ vars.ENV }} API_PROVIDER_URL=${{ vars.API_PROVIDER_URL }} 
+      
+      - name: Imprimir endpoint de la Container App
+        run: |
+          ENDPOINT=$(az containerapp show --name $APP_NAME --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
+          echo "Endpoint de la Container App: https://$ENDPOINT"
 
 
   approval-qa:
@@ -167,7 +172,12 @@ jobs:
             --resource-group $RESOURCE_GROUP \
             --image $IMAGE \
             --set-env-vars ENV=${{ vars.ENV }} API_PROVIDER_URL=${{ vars.API_PROVIDER_URL }} 
-
+      
+      - name: Imprimir endpoint de la Container App
+        run: |
+          ENDPOINT=$(az containerapp show --name $APP_NAME --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
+          echo "Endpoint de la Container App: https://$ENDPOINT"
+          
   approval-prd:
     needs: [deploy-qa]
     environment:
@@ -230,3 +240,7 @@ jobs:
             --image $IMAGE \
             --set-env-vars ENV=${{ vars.ENV }} API_PROVIDER_URL=${{ vars.API_PROVIDER_URL }} 
 
+      - name: Imprimir endpoint de la Container App
+        run: |
+          ENDPOINT=$(az containerapp show --name $APP_NAME --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
+          echo "Endpoint de la Container App: https://$ENDPOINT"
