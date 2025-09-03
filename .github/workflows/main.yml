@@ -96,10 +96,25 @@ jobs:
           TAG=${{ steps.short.outputs.short_sha }}
           APP_NAME=aca-ms-apellido-dev
           RESOURCE_GROUP=rg-cicd-terraform-app-apellido
+          ACR_NAME=acrapellido
 
           echo "IMAGE=$IMAGE_NAME:$TAG" >> $GITHUB_ENV
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "RESOURCE_GROUP=$RESOURCE_GROUP" >> $GITHUB_ENV
+          echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+
+      - name: Configure ACR credentials for Container App
+        run: |
+          echo "Configurando credenciales del ACR para la Container App..."
+          ACR_SERVER=$(az acr show --name $ACR_NAME --resource-group $RESOURCE_GROUP --query loginServer --output tsv)
+          echo "Servidor ACR: $ACR_SERVER"
+          
+          # Configurar la Container App para usar managed identity con el ACR
+          az containerapp registry set \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --server $ACR_SERVER \
+            --identity system
   
       - name: Deploy to Azure Container App
         run: |
@@ -107,5 +122,4 @@ jobs:
           az containerapp update \
             --name $APP_NAME \
             --resource-group $RESOURCE_GROUP \
-            --image $IMAGE \
-            --assign-identity system
+            --image $IMAGE
