@@ -5,10 +5,28 @@ on:
     branches: [ "main" ]
 
 jobs:
+  approval-qa:
+    environment:
+      name: approval-qa
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aprobar
+        run: echo "Esperando aprobación"
+
+  approval-prd:
+    environment:
+      name: approval-prd
+    runs-on: ubuntu-latest
+    needs: [approval-qa]
+    steps:
+      - name: Aprobar
+        run: echo "Esperando aprobación"
+
   build:
     name: CI
     environment: dev
     runs-on: ubuntu-latest
+    needs: [approval-prd]
 
     steps:
       - name: Obtener código fuente
