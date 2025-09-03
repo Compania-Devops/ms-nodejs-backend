@@ -175,7 +175,7 @@ jobs:
 
   deploy-prd:
     name: CD [prd]
-    needs: build
+    needs: approval-prd
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
