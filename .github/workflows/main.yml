@@ -229,3 +229,4 @@ jobs:
             --resource-group $RESOURCE_GROUP \
             --image $IMAGE \
             --set-env-vars ENV=${{ vars.ENV }} API_PROVIDER_URL=${{ vars.API_PROVIDER_URL }} 
+
