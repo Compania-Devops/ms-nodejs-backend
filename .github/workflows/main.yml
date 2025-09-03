@@ -108,5 +108,4 @@ jobs:
             --name $APP_NAME \
             --resource-group $RESOURCE_GROUP \
             --image $IMAGE \
-            --registry-login-server acrapellido.azurecr.io \
-            --registry-identity system
+            --assign-identity system
