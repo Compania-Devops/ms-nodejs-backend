@@ -125,7 +125,7 @@ jobs:
   deploy-qa:
     name: CD [qa]
     environment: qa
-    # needs: approval-qa
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
