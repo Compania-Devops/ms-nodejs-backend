@@ -75,7 +75,7 @@ jobs:
           IMAGE_NAME=acr${{ vars.APELLIDO }}.azurecr.io/my-nodejs-app
           TAG=${{ steps.short.outputs.short_sha }}
           APP_NAME=aca-ms-${{ vars.APELLIDO }}-${{ vars.ENV }}
-          RESOURCE_GROUP=rg-cicd-terraform-app-${{ vars.APELLIDO }}
+          RESOURCE_GROUP=rg-cicd-terraform-app-${{ vars.APELLIDO }}-${{ vars.ENV }}
           ACR_NAME=acr${{ vars.APELLIDO }}
 
           echo "IMAGE=$IMAGE_NAME:$TAG" >> $GITHUB_ENV
