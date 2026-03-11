@@ -75,12 +75,14 @@ jobs:
           IMAGE_NAME=acr${{ vars.APELLIDO }}.azurecr.io/my-nodejs-app
           TAG=${{ steps.short.outputs.short_sha }}
           APP_NAME=aca-ms-${{ vars.APELLIDO }}-${{ vars.ENV }}
-          RESOURCE_GROUP=rg-cicd-terraform-app-${{ vars.APELLIDO }}-${{ vars.ENV }}
+          RESOURCE_GROUP=rg-cicd-terraform-app-${{ vars.APELLIDO }}
+          RESOURCE_GROUP_ENV=rg-cicd-terraform-app-${{ vars.APELLIDO }}-${{ vars.ENV }}
           ACR_NAME=acr${{ vars.APELLIDO }}
 
           echo "IMAGE=$IMAGE_NAME:$TAG" >> $GITHUB_ENV
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "RESOURCE_GROUP=$RESOURCE_GROUP" >> $GITHUB_ENV
+          echo "RESOURCE_GROUP_ENV=$RESOURCE_GROUP_ENV" >> $GITHUB_ENV
           echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
 
       - name: Configurar ACR credentials para Container App
@@ -92,7 +94,7 @@ jobs:
           # Configurar la Container App para usar managed identity con el ACR
           az containerapp registry set \
             --name $APP_NAME \
-            --resource-group $RESOURCE_GROUP \
+            --resource-group $RESOURCE_GROUP_ENV \
             --server $ACR_SERVER \
             --identity system
   
@@ -101,13 +103,13 @@ jobs:
           echo "Updating Azure Container App $APP_NAME to image $IMAGE"
           az containerapp update \
             --name $APP_NAME \
-            --resource-group $RESOURCE_GROUP \
+            --resource-group $RESOURCE_GROUP_ENV \
             --image $IMAGE \
             --set-env-vars ENV=${{ vars.ENV }} API_PROVIDER_URL=${{ vars.API_PROVIDER_URL }} 
       
       - name: Imprimir endpoint del Container App
         run: |
-          ENDPOINT=$(az containerapp show --name $APP_NAME --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
+          ENDPOINT=$(az containerapp show --name $APP_NAME --resource-group $RESOURCE_GROUP_ENV --query properties.configuration.ingress.fqdn -o tsv)
           echo "Endpoint del Container App: https://$ENDPOINT"
 
 
