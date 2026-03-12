@@ -17,8 +17,6 @@ app.get('/api/items/:id', getItem);
 app.post('/api/items', createItem);
 app.put('/api/items/:id', updateItem);
 app.delete('/api/items/:id', deleteItem);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/home', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 if (process.env.NODE_ENV !== 'test') {
