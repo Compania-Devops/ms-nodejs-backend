@@ -99,11 +99,11 @@ jobs:
           
           
           # Configurar la Container App para usar managed identity con el ACR
-          #az containerapp registry set \
-          #  --name $APP_NAME \
-          #  --resource-group $RESOURCE_GROUP_ENV \
-          #  --server $ACR_SERVER \
-          #  --identity system
+          az containerapp registry set \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP_ENV \
+            --server $ACR_SERVER \
+            --identity system
   
       - name: Deploy a Azure Container App
         run: |
