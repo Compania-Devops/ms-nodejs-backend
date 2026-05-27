@@ -84,14 +84,41 @@ jobs:
           echo "RESOURCE_GROUP=$RESOURCE_GROUP" >> $GITHUB_ENV
           echo "RESOURCE_GROUP_ENV=$RESOURCE_GROUP_ENV" >> $GITHUB_ENV
           echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
-
+      
+      - name: Habilitar Managed Identity
+        run: |
+          az containerapp identity assign \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP_ENV \
+            --system-assigned
+      
+      - name: Dar permisos AcrPull
+        run: |
+          PRINCIPAL_ID=$(az containerapp show \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP_ENV \
+            --query identity.principalId \
+            -o tsv)
+      
+          ACR_ID=$(az acr show \
+            --name $ACR_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --query id \
+            -o tsv)
+      
+          az role assignment create \
+            --assignee $PRINCIPAL_ID \
+            --role AcrPull \
+            --scope $ACR_ID
+      
       - name: Configurar ACR credentials para Container App
         run: |
-          echo "Configurando credenciales del ACR para la Container App..."
-          ACR_SERVER=$(az acr show --name $ACR_NAME --resource-group $RESOURCE_GROUP --query loginServer --output tsv)
-          echo "Servidor ACR: $ACR_SERVER"
-          
-          # Configurar la Container App para usar managed identity con el ACR
+          ACR_SERVER=$(az acr show \
+            --name $ACR_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --query loginServer \
+            --output tsv)
+      
           az containerapp registry set \
             --name $APP_NAME \
             --resource-group $RESOURCE_GROUP_ENV \
