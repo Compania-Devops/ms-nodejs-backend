@@ -96,13 +96,14 @@ jobs:
           echo "Configurando credenciales del ACR para la Container App..."
           ACR_SERVER=$(az acr show --name $ACR_NAME --resource-group $RESOURCE_GROUP --query loginServer --output tsv)
           echo "Servidor ACR: $ACR_SERVER"
-          az account set --subscription "7664be55-774e-45fd-a02c-40627b5a7a58"
+          
+          
           # Configurar la Container App para usar managed identity con el ACR
-          az containerapp registry set \
-            --name $APP_NAME \
-            --resource-group $RESOURCE_GROUP_ENV \
-            --server $ACR_SERVER \
-            --identity system
+          #az containerapp registry set \
+          #  --name $APP_NAME \
+          #  --resource-group $RESOURCE_GROUP_ENV \
+          #  --server $ACR_SERVER \
+          #  --identity system
   
       - name: Deploy a Azure Container App
         run: |
