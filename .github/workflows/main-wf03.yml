@@ -15,10 +15,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Obtener SHA corto
         id: short
-        run: |
-          echo "short_sha=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
-          echo "SHA completo: $GITHUB_SHA"
-          echo "SHA corto: ${{ steps.short.outputs.short_sha }}"
+        run: echo "short_sha=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
       - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
@@ -66,10 +63,7 @@ jobs:
   
       - name: Obtener SHA corto
         id: short
-        run: |
-          echo "short_sha=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
-          echo "SHA completo: $GITHUB_SHA"
-          echo "SHA corto: ${{ steps.short.outputs.short_sha }}"
+        run: echo "short_sha=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_OUTPUT
         
       - name: Azure Login
         uses: azure/login@v2
@@ -96,7 +90,6 @@ jobs:
           echo "Configurando credenciales del ACR para la Container App..."
           ACR_SERVER=$(az acr show --name $ACR_NAME --resource-group $RESOURCE_GROUP --query loginServer --output tsv)
           echo "Servidor ACR: $ACR_SERVER"
-          
           
           # Configurar la Container App para usar managed identity con el ACR
           az containerapp registry set \
